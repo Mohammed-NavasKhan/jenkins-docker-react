@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    tools { nodejs "nodejs" }
+    // tools { nodejs "nodejs" }
     environment {
         CI = 'true'
     }
@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                dir('jenkins-react') {
+                dir('jenkins-docker-react') {
                     sh 'npm install'
                 }
             }
@@ -31,8 +31,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('jenkins-react') {
-                    sh 'npm run build'
+                dir('jenkins-docker-react') {
+                    sh 'docker build -it react-jenkins-docker .'
                 }
             }
         }
