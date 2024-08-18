@@ -1,41 +1,32 @@
 pipeline {
     agent any
-    // tools { nodejs "nodejs" }
+    tools { 
+        nodejs "nodejs" 
+    }
+    
     environment {
         CI = 'true'
+        imageName = "programwithnavas/react-app"
     }
     stages {
-        stage('Clean up'){
-            steps {
-                deleteDir()
-            }
-        }
+        // stage('Clean up'){
+        //     steps {
+        //         deleteDir()
+        //     }
+        // }
         stage('Clone Repo'){
             steps {
                 sh 'git clone https://github.com/Mohammed-NavasKhan/jenkins-docker-react.git'
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                dir('jenkins-docker-react') {
-                    sh 'npm install'
-                }
+        stage('Building Image') {
+            steps { 
+                
+                    script {
+                        // Adjust the path to the Dockerfile if necessary
+                        dockerImage = docker.build("${imageName}") 
+                    }
             }
         }
-        stage('Unit Tests') {
-            steps {
-                dir('jenkins-react') {
-                    sh 'npm run test'
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                dir('jenkins-docker-react') {
-                    sh 'docker build -it react-jenkins-docker .'
-                }
-            }
-        }
-
     }
 }
