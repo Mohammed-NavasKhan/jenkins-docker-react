@@ -2,10 +2,8 @@ pipeline {
     agent any
     tools { 
         nodejs "nodejs" 
-    }
-    
+    }    
     environment {
-        CI = 'true'
         imageName = "programwithnavas/react-app"
         registryCredentials = "mohammednavasdocker"
         dockerImage = ""
@@ -23,25 +21,34 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                dir('jenkins-docker-react') {
+                dir('jenkins-docker-react/React') {
                     sh 'npm install'
                 }
             }
         }
         stage('Unit Tests') {
             steps {
-                dir('jenkins-docker-react') {
+                dir('jenkins-docker-react/React') {
                     sh 'npm run test'
                 }
             }
         }
         stage('Building Image') {
             steps {  
-                dir('jenkins-docker-react') {        
+                dir('jenkins-docker-react/React') {        
                     script {
                         dockerImage = docker.build imageName
                     }
                 }                 
+            }   
+        }
+        stage('Deploying Image') {
+            steps {  
+                script {
+                    docker.withRegistry("https://registry.hub.docker.com", "dockerhub-cred"){
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                    }
+                }
             }   
         }
 
