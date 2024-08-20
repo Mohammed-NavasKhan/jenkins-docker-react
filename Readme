@@ -1,0 +1,2 @@
+1. docker run -d -v /var/run/docker.sock:/var/run/docker.sock -v jenkins_home:/var/jenkins_home -p 8082:8080 --name jenkins_container jenkins_app
+2. 7f17f1f2f1244021a171fae28ae4df37 - password
