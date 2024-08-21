@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  web-dev:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3010:3010"
+    volumes:
+      - "/app/node_modules"
+      - "./:/app"
+  web-prod:
+    container_name: react-docker-w-nginx
+    build: .
+    ports:
+      - "3010:3010"

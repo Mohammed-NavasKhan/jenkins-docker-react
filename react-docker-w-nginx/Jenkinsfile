@@ -4,7 +4,7 @@ pipeline {
         nodejs "nodejs" 
     }    
     environment {
-        imageName = "mohammednavasdocker/react-app"
+        imageName = "mohammednavasdocker/react-docker-w-nginx"
         registryCredentials = "mohammednavasdocker"
         dockerImage = ""
     }
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                dir('jenkins-docker-react/React') {
+                dir('jenkins-docker-react/react-docker-w-nginx') {
                     sh "npm cache clear --force"
                     sh 'npm install'
                 }
@@ -29,14 +29,14 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
-                dir('jenkins-docker-react/React') {
+                dir('jenkins-docker-react/react-docker-w-nginx') {
                     sh 'npm run test'
                 }
             }
         }
         stage('Building Image') {
             steps {  
-                dir('jenkins-docker-react/React') {        
+                dir('jenkins-docker-react/react-docker-w-nginx') {        
                     script {
                         dockerImage = docker.build imageName
                     }
