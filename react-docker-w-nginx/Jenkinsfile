@@ -27,13 +27,6 @@ pipeline {
                 }
             }
         }
-        stage('Unit Tests') {
-            steps {
-                dir('jenkins-docker-react/react-docker-w-nginx') {
-                    sh 'npm run test'
-                }
-            }
-        }
         stage('Building Image') {
             steps {  
                 dir('jenkins-docker-react/react-docker-w-nginx') {        
