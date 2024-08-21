@@ -1,3 +1,4 @@
 1. docker run -d -v jenkins_home:/var/jenkins_home -v //var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 --name jenkins_app --restart=on-failure c843ab0d1649
-2. 7f17f1f2f1244021a171fae28ae4df37 - password
+2. 89ddef3b5c044c8cbff08fdfe74e0214 - password
 3. docker run -d -p 3000:3000 mohammednavasdocker/react-app
+4. var/jenkins_home
