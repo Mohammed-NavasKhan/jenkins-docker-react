@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:20.9.0-alpine3.18'
+            image 'react-docker-container-agent'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }  
