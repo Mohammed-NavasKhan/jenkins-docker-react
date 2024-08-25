@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'react nodejs'
+        label 'react'
     }   
     environment {
         imageName = "mohammednavasdocker/react-docker-slave-agent"

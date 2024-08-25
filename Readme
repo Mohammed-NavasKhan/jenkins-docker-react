@@ -2,3 +2,5 @@
 2. 89ddef3b5c044c8cbff08fdfe74e0214 - password
 3. docker run -d -p 3000:3000 mohammednavasdocker/react-app
 4. var/jenkins_home
+5. docker build -t react-agent .
+6. docker run -d -v jenkins_home:/var/jenkins_home -v //var/run/docker.sock:/var/run/docker.sock --name react-agent react-agent
