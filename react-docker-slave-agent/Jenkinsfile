@@ -1,0 +1,60 @@
+pipeline {
+    agent {
+        label 'react nodejs'
+    }   
+    environment {
+        imageName = "mohammednavasdocker/react-docker-slave-agent"
+        registryCredentials = "mohammednavasdocker"
+        dockerImage = ""
+    }
+    stages {
+        stage('Clean up'){
+            steps {
+                deleteDir()
+            }
+        }
+        stage('Clone Repo'){
+            steps {
+                sh 'git clone https://github.com/Mohammed-NavasKhan/jenkins-docker-react.git'
+            }
+        }        
+        stage('Building Image') {
+            steps {  
+                dir('jenkins-docker-react/react-docker-slave-agent') {        
+                    script {
+                        dockerImage = docker.build imageName
+                    }
+                }                 
+            }   
+        }
+         stage('Save Docker Image as Tar') {
+            steps {
+                script {
+                    // Save the Docker image as a tarball file
+                    sh "docker save -o react-docker-slave-agent.tar ${imageName}"
+                }
+            }
+        }
+        stage('Archive Docker Image') {
+            steps {
+                // Archive the tarball file as an artifact
+                archiveArtifacts artifacts: 'react-docker-slave-agent.tar', allowEmptyArchive: true
+                 script {
+                    def artifactURL = "${env.JENKINS_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/react-docker-slave-agent.tar"
+                    echo "Downloading... artifact from: ${artifactURL}"
+                    sh "curl -v -L -u admin:89ddef3b5c044c8cbff08fdfe74e0214 -LO ${artifactURL}"
+                }
+            }
+        }
+        stage('Deploying Image') {
+            steps {  
+                script {
+                    docker.withRegistry("https://registry.hub.docker.com", "dockerhub-creds"){
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                    }
+                }
+            }   
+        }
+
+    }
+}
